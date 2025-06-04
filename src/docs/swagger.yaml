@@ -1,0 +1,157 @@
+openapi: 3.0.0
+info:
+  title: Crony Job Scheduler API
+  version: 1.0.0
+  description: API to create, manage, and monitor cron jobs.
+
+servers:
+  - url: /api/v1
+    description: Main API server
+
+paths:
+  /jobs:
+    get:
+      summary: List all jobs
+      tags:
+        - Jobs
+      responses:
+        "200":
+          description: A list of all cron jobs
+
+  /jobs/create:
+    post:
+      summary: Create a new job
+      tags:
+        - Jobs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - schedule
+                - message
+              properties:
+                name:
+                  type: string
+                  example: "SampleJob"
+                schedule:
+                  type: string
+                  example: "* * * * *"
+                message:
+                  type: string
+                  example: "This job runs every minute"
+      responses:
+        "201":
+          description: Job created successfully
+        "400":
+          description: Invalid input
+        "409":
+          description: Job with this name already exists
+
+  /jobs/{id}/start:
+    post:
+      summary: Start a job
+      tags:
+        - Jobs
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Job started
+        "404":
+          description: Job not found
+        "409":
+          description: Job already running
+
+  /jobs/{id}/stop:
+    post:
+      summary: Stop a job
+      tags:
+        - Jobs
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Job stopped
+        "404":
+          description: Job not running or not found
+
+  /jobs/{id}/logs:
+    get:
+      summary: Get logs for a job
+      tags:
+        - Logs
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Array of log entries for the job
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jobId:
+                    type: string
+                  logs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        timestamp:
+                          type: string
+                          format: date-time
+                        message:
+                          type: string
+
+  /jobs/{id}/stats:
+    get:
+      summary: Get job stats like run count, last run, etc.
+      tags:
+        - Jobs
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Job statistics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jobId:
+                    type: string
+                  name:
+                    type: string
+                  schedule:
+                    type: string
+                  message:
+                    type: string
+                  isRunning:
+                    type: boolean
+                  lastRun:
+                    type: string
+                    format: date-time
+                  runCount:
+                    type: integer
+                  nextRun:
+                    type: string
