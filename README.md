@@ -30,7 +30,7 @@ Crony is a robust job scheduling service built with Node.js and TypeScript that 
 
 - Clone the repository:
 ```sh
-git clone https://github.com/yasirmansoori/RBAC_Authentication_with_JWT.git
+git clone https://github.com/yasirmansoori/crony.git
 ```
 - Install dependencies:
 ```sh
