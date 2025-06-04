@@ -188,4 +188,4 @@ Crony follows a layered architecture:
 - `Controller Layer`: Request handling and response formatting
 - `Service Layer`: Business logic and job scheduling
 - `Data Layer`: MongoDB data storage via Mongoose
-<div align="center">Made with ❤️</div>
+<div align="center">Made with ❤️ by Yasir Mansoori</div>
